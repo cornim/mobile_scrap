@@ -8,6 +8,9 @@ from scrapy.item import Item, Field
 class Car(Item):
     # define the fields for your item here like:
     # name = Field()
+    price = Field()
     keyless = Field()
     adaptive_drive = Field()
+    stau_assi = Field()
+    RTTI = Field()
     url = Field()

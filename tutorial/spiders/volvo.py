@@ -15,7 +15,7 @@ class VolvoSpider(Spider):
     ]
     
     #List with blocked ad ids
-    block_list = ["204379153"]
+    block_list = ["204379153", "208450258"]
 
     def parse(self, response):
         for sel in response.xpath("//a[contains(@href,'pageNumber')]"):
