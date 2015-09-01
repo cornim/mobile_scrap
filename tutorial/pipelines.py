@@ -23,7 +23,7 @@ class CarPipeline(object):
     def close_spider(self, spider):
         items_sorted = sorted(self.items, key=lambda x:x['price'])
         with open(spider.name + ".csv", 'w') as f:
-            fieldnames = ["price", "keyless", "adaptive_drive", "stau_assi", "RTTI", "url"]
+            fieldnames = ["price", "keyless", "adaptive_drive", "stau_assi", "RTTI", "ez", "km", "ps", "url"]
             writer = csv.DictWriter(f, fieldnames)
             writer.writeheader()
             for item in items_sorted:

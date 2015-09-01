@@ -14,3 +14,6 @@ class Car(Item):
     stau_assi = Field()
     RTTI = Field()
     url = Field()
+    ez = Field()
+    ps = Field()
+    km = Field()

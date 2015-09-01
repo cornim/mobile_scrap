@@ -6,13 +6,13 @@ Created on Aug 20, 2015
 
 from scrapy import Spider, Request
 from tutorial.items import Car
-from tutorial.spiders.helper import search_words_yes_no
+from tutorial.spiders.helper import search_words_yes_no, extract_main_data
 
 class BmwSpider(Spider):
     name = "bmw"
     allowed_domains = ["mobile.de"]
     start_urls = [
-        "http://suchen.mobile.de/auto/search.html?isSearchRequest=true&sortOption.sortBy=searchNetGrossPrice&fuels=DIESEL&sortOption.sortOrder=ASCENDING&features=HEAD_UP_DISPLAY&damageUnrepaired=NO_DAMAGE_UNREPAIRED&ambitCountry=DE&scopeId=C&transmissions=AUTOMATIC_GEAR&categories=EstateCar&maxMileage=150000&minPowerAsArray=110&minPowerAsArray=KW&minFirstRegistrationDate=2011-01-01&maxPrice=35000&makeModelVariant1.makeId=3500&makeModelVariant1.modelId=16%2C17%2C74%2C18%2C19%2C20%2C21%2C22%2C65%2C23%2C66%2C24%2C25%2C26%2C67%2C70&makeModelVariant1.modelGroupId=22"
+        "http://suchen.mobile.de/auto/search.html?isSearchRequest=true&sortOption.sortBy=searchNetGrossPrice&fuels=DIESEL&sortOption.sortOrder=ASCENDING&features=HEAD_UP_DISPLAY&damageUnrepaired=NO_DAMAGE_UNREPAIRED&ambitCountry=DE&scopeId=C&transmissions=AUTOMATIC_GEAR&categories=EstateCar&maxMileage=150000&minPowerAsArray=150&minPowerAsArray=KW&minFirstRegistrationDate=2011-01-01&maxPrice=35000&makeModelVariant1.makeId=3500&makeModelVariant1.modelId=16%2C17%2C74%2C18%2C19%2C20%2C21%2C22%2C65%2C23%2C66%2C24%2C25%2C26%2C67%2C70&makeModelVariant1.modelGroupId=22"
     ]
     
     #List with blocked ad ids
@@ -39,6 +39,9 @@ class BmwSpider(Spider):
             if any(word in data for word in check1) \
             and not any(ad_id in response.url for ad_id in self.block_list):
                 ret = Car()
+                
+                extract_main_data(response, ret)
+                
                 search_words_yes_no(["komfortzugang", "keyless"], data, ret, 'keyless')
                 search_words_yes_no(["adaptive drive"], data, ret, 'adaptive_drive')
                 search_words_yes_no(["driving assistant plus", "stauassistent"], data, ret, 'stau_assi')
