@@ -6,6 +6,7 @@ Created on Aug 20, 2015
 
 from scrapy import Spider, Request
 from tutorial.items import Car
+from tutorial.spiders.helper import search_words_yes_no
 
 class BmwSpider(Spider):
     name = "bmw"
@@ -38,21 +39,16 @@ class BmwSpider(Spider):
             if any(word in data for word in check1) \
             and not any(ad_id in response.url for ad_id in self.block_list):
                 ret = Car()
-                self.search_words_yes_no(["komfortzugang", "keyless"], data, ret, 'keyless')
-                self.search_words_yes_no(["adaptive drive"], data, ret, 'adaptive_drive')
-                self.search_words_yes_no(["driving assistant plus", "stauassistent"], data, ret, 'stau_assi')
-                self.search_words_yes_no(["rtti", "traffic information"], data, ret, 'RTTI')                    
+                search_words_yes_no(["komfortzugang", "keyless"], data, ret, 'keyless')
+                search_words_yes_no(["adaptive drive"], data, ret, 'adaptive_drive')
+                search_words_yes_no(["driving assistant plus", "stauassistent"], data, ret, 'stau_assi')
+                search_words_yes_no(["rtti", "traffic information"], data, ret, 'RTTI')                    
 
                 ret['price'] = response.xpath("//p[contains(@class, 'pricePrimaryCountryOfSale priceGross')]/text()").extract()[0]
                 ret['url'] = response.url
                 yield ret
                 
-                
-    def search_words_yes_no(self, words, data, car_item, car_field):
-        if any(word in data for word in words):
-            car_item[car_field] = "Y"
-        else:
-            car_item[car_field] = "N"
+
                 
                 
                 
