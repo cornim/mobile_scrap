@@ -17,3 +17,4 @@ class Car(Item):
     ez = Field()
     ps = Field()
     km = Field()
+    dist = Field()

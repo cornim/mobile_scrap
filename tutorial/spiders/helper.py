@@ -6,6 +6,7 @@ Created on Aug 31, 2015
 
 import re
 import logging
+from pygeodb import distance
 
 def search_words_yes_no(words, data, car_item, car_field):
     if any(word in data for word in words):
@@ -32,4 +33,14 @@ def extract_main_data(response, car_item):
         car_item['ps'] = int(ps_match.group(1))
     except:
         logging.exception("No ps for url " + response.url)
+        
+def plz_dist(response, home_plz):
+    address_text = "".join(response.xpath("//p[@id='vcardAddress']/text()").extract())
+    re_match = re.match(r".*([0-9]{5}).*", address_text, flags=re.DOTALL)
+    if re_match:
+        car_plz = re_match.group(1)
+        dist = distance(home_plz, car_plz)/1000
+    else:
+        dist = 1000
+    return dist
         
