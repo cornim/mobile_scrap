@@ -6,6 +6,7 @@ Created on Aug 20, 2015
 
 from scrapy import Spider, Request
 from tutorial.items import Car
+from tutorial.spiders.helper import search_words_yes_no, extract_main_data
 
 class VolvoSpider(Spider):
     name = "volvo"
@@ -37,13 +38,19 @@ class VolvoSpider(Spider):
             check1 = ("aktive geschw", "adaptive cruise control", "abstandsregelung",  "abstandregelung"
                       "driving assistant plus", "fahrerassistenz-paket", "fahrerassistenz paket",
                       "fahrassistenz-paket", "fahrassistenz paket", "abstandsregeltempomat")
-            check2 = ("keyless", "keyless drive", "keyless vehicle", "komfortzugang")
             if any(word in data for word in check1) \
             and not any (word in data for word in self.block_list):
                 ret = Car()
+                
+                extract_main_data(response, ret)
+                
+                search_words_yes_no(["komfortzugang", "keyless"], data, ret, 'keyless')
+                search_words_yes_no(["adaptive drive"], data, ret, 'adaptive_drive')
+                search_words_yes_no(["driving assistant plus", "stauassistent"], data, ret, 'stau_assi')
+                search_words_yes_no(["rtti", "traffic information"], data, ret, 'RTTI')        
+                
+                ret['price'] = response.xpath("//p[contains(@class, 'pricePrimaryCountryOfSale priceGross')]/text()").extract()[0]
                 ret['url'] = response.url
-                if any(word in data for word in check2):
-                    ret['keyless'] = "Y"
                 yield ret
 
 
