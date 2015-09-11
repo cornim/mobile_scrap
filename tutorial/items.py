@@ -18,3 +18,4 @@ class Car(Item):
     ps = Field()
     km = Field()
     dist = Field()
+    m_paket = Field()
