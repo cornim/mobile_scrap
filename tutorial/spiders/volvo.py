@@ -12,7 +12,7 @@ class VolvoSpider(Spider):
     name = "volvo"
     allowed_domains = ["mobile.de"]
     start_urls = [
-        "http://suchen.mobile.de/auto/search.html?damageUnrepaired=NO_DAMAGE_UNREPAIRED&scopeId=C&fuels=DIESEL&categories=EstateCar&transmissions=AUTOMATIC_GEAR&maxPrice=25000&minPowerAsArray=110&minPowerAsArray=KW&minFirstRegistrationDate=2009-01-01&maxMileage=150000&makeModelVariant1.makeId=25100&isSearchRequest=true&sortOption.sortBy=searchNetGrossPrice&sortOption.sortOrder=ASCENDING"
+        "http://suchen.mobile.de/auto/search.html?isSearchRequest=true&scopeId=C&makeModelVariant1.makeId=25100&makeModelVariant1.modelId=&makeModelVariant1.modelDescription=&makeModelVariantExclusions[0].makeId=&categories=EstateCar&minSeats=&maxSeats=&doorCount=&minFirstRegistrationDate=2009-01-01&maxFirstRegistrationDate=&minMileage=&maxMileage=150000&minPrice=&maxPrice=25000&minPowerAsArray=150&maxPowerAsArray=&maxPowerAsArray=PS&minPowerAsArray=PS&fuels=DIESEL&transmissions=AUTOMATIC_GEAR&minCubicCapacity=&maxCubicCapacity=&ambitCountry=DE&zipcode=&q=&climatisation=&airbag=&daysAfterCreation=&adLimitation=&export=&vatable=&maxConsumptionCombined=&emissionClass=&emissionsSticker=&damageUnrepaired=NO_DAMAGE_UNREPAIRED&numberOfPreviousOwners=&minHu=&usedCarSeals="
     ]
     
     #List with blocked ad ids
