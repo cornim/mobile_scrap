@@ -17,12 +17,12 @@ class CarPipeline(object):
             item['price'] = int("".join(digits))
             if item['ez'] and item['km']:
                 base_price = 50000 - 2500 * (2016-int(item['ez']) + int(item['km'])/25000.0)
-                base_price = self.mod_price(base_price, item['keyless'], 1200)
-                base_price = self.mod_price(base_price, item['adaptive_drive'], 1500)
-                base_price = self.mod_price(base_price, item['stau_assi'], 4000)
-                base_price = self.mod_price(base_price, item['RTTI'], 1000)
-                base_price = self.mod_price(base_price, item['m_paket'], 1000)
-                base_price = base_price - int(item['dist'])
+                base_price = self.mod_price(base_price, item['keyless'], 1500)
+                base_price = self.mod_price(base_price, item['adaptive_drive'], 2500)
+                base_price = self.mod_price(base_price, item['stau_assi'], 5000)
+                base_price = self.mod_price(base_price, item['RTTI'], 1500)
+                base_price = self.mod_price(base_price, item['m_paket'], 1500)
+                base_price = base_price - int(item['dist'])*1
                 item['price_calc'] = base_price
                 item['price_diff'] = item['price_calc'] - item['price']
         
