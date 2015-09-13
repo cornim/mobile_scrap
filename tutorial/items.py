@@ -19,3 +19,5 @@ class Car(Item):
     km = Field()
     dist = Field()
     m_paket = Field()
+    price_calc = Field()
+    price_diff = Field()
