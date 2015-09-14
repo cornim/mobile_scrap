@@ -43,4 +43,20 @@ def plz_dist(response, home_plz):
     else:
         dist = 1000
     return dist
+
+def block_known_cars(url, block_list):
+    car_id = get_id(url)
+    if car_id != None:
+        if car_id in block_list:
+            return True
+        else:
+            block_list.append(car_id)
+            return False
+
+def get_id(url):
+    re_match = re.match(r".*id=([0-9]+)", url)
+    if re_match == None:
+        return None
+    else:
+        return re_match.group(1)
         

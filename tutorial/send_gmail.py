@@ -16,6 +16,7 @@ from email.mime.text import MIMEText
 class GmailSender(object):
     
     credentials = None
+    server = None
     
     def GenerateOAuth2String(self, username, access_token, base64_encode=True):
         """Generates an IMAP OAuth2 authentication string.
@@ -56,8 +57,7 @@ class GmailSender(object):
             store.release_lock()
             self.credentials.set_store(store)
     
-    
-    def send_mail(self, text):
+    def start_server(self):
         if self.credentials == None:
             self.load_oauth2_credentials('client_secret.json', "cred.json")
     
@@ -66,23 +66,23 @@ class GmailSender(object):
             http = httplib2.Http()
             self.credentials.refresh(http)
         auth_string = self.GenerateOAuth2String(user, self.credentials.access_token)
+        self.server = smtplib.SMTP('smtp.gmail.com:587')
+        #server.set_debuglevel(True)
+        self.server.ehlo()
+        self.server.starttls()
+        self.server.ehlo()
+        self.server.docmd('AUTH', 'XOAUTH2 ' + auth_string)
+        
+    def stop_server(self):
+        self.server.quit()
+        
+    
+    def send_mail(self, text, subject = "", to_addr = 'cornelius.mund@gmail.com', from_addr = 'cornelius.mund@gmail.com'):        
         
         msg = MIMEText(text)
+        msg['Subject'] = subject
+        msg['From'] = from_addr
+        msg['To'] = to_addr
         
+        self.server.sendmail(from_addr, [to_addr], msg.as_string())
         
-        # me == the sender's email address
-        # you == the recipient's email address
-        msg['Subject'] = 'Test'
-        msg['From'] = 'cornelius.mund@gmail.com'
-        msg['To'] = 'cornelius.mund@d-fine.de'
-        
-        # Send the message via our own SMTP server, but don't include the
-        # envelope header.
-        server = smtplib.SMTP('smtp.gmail.com:587')
-        #server.set_debuglevel(True)
-        server.ehlo()
-        server.starttls()
-        server.ehlo()
-        server.docmd('AUTH', 'XOAUTH2 ' + auth_string)
-        server.sendmail('cornelius.mund@gmail.com', ['cornelius.mund@d-fine.de'], msg.as_string())
-        server.quit()
