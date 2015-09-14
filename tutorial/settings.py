@@ -7,12 +7,13 @@
 #
 from scrapy.settings.default_settings import ITEM_PIPELINES
 
-BOT_NAME = 'tutorial'
-BOT_VERSION = '1.0'
-
 SPIDER_MODULES = ['tutorial.spiders']
 NEWSPIDER_MODULE = 'tutorial.spiders'
-USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
+USER_AGENT = 'test,1.0'
+
+DOWNLOAD_HANDLERS = {'s3': None,}
+
+LOG_LEVEL = 'INFO'
 
 ITEM_PIPELINES = {
     'tutorial.pipelines.CarPipeline' : 500
