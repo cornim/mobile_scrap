@@ -14,6 +14,7 @@ USER_AGENT = 'test,1.0'
 DOWNLOAD_HANDLERS = {'s3': None,}
 
 LOG_LEVEL = 'INFO'
+LOG_FILE = 'scrapy.log'
 
 ITEM_PIPELINES = {
     'tutorial.pipelines.CarPipeline' : 500

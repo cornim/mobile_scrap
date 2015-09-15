@@ -32,8 +32,8 @@ class CarPipeline(object):
         
         self.items.append(item)
         
-        if item['price_diff'] >= 0:
-            self.send_mail(spider, item)            
+        #if item['price_diff'] >= 0:
+        self.send_mail(spider, item)            
         
         return item
     
@@ -45,7 +45,7 @@ class CarPipeline(object):
     
     def send_mail(self, spider, item):
         subject = spider.name + ": Price diff = " + str(item['price_diff'])
-        text = '\n'.join(str(key)+"="+str(val) for (key,val) in dict(item.items()).items())
+        text = '\n\n'.join(str(key)+"="+str(val) for (key,val) in dict(item.items()).items())
         self.email.send_mail(text, subject)
     
     def open_spider(self, spider):
