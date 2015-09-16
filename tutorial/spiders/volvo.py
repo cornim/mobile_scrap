@@ -14,7 +14,7 @@ class VolvoSpider(Spider):
     name = "volvo"
     allowed_domains = ["mobile.de"]
     start_urls = [
-        "http://suchen.mobile.de/auto/search.html?isSearchRequest=true&scopeId=C&makeModelVariant1.makeId=25100&makeModelVariant1.modelId=&makeModelVariant1.modelDescription=&makeModelVariantExclusions[0].makeId=&categories=EstateCar&minSeats=&maxSeats=&doorCount=&minFirstRegistrationDate=2009-01-01&maxFirstRegistrationDate=&minMileage=&maxMileage=150000&minPrice=&maxPrice=24000&minPowerAsArray=150&maxPowerAsArray=&maxPowerAsArray=PS&minPowerAsArray=PS&fuels=DIESEL&transmissions=AUTOMATIC_GEAR&minCubicCapacity=&maxCubicCapacity=&ambitCountry=DE&zipcode=&q=&climatisation=&airbag=&daysAfterCreation=&adLimitation=&export=&vatable=&maxConsumptionCombined=&emissionClass=&emissionsSticker=&damageUnrepaired=NO_DAMAGE_UNREPAIRED&numberOfPreviousOwners=&minHu=&usedCarSeals="
+        "http://suchen.mobile.de/auto/search.html?isSearchRequest=true&sortOption.sortOrder=ASCENDING&scopeId=C&sortOption.sortBy=searchNetGrossPrice&damageUnrepaired=NO_DAMAGE_UNREPAIRED&minFirstRegistrationDate=2009-01-01&maxMileage=150000&maxPrice=25000&fuels=DIESEL&makeModelVariant1.makeId=25100&makeModelVariantExclusions[0].makeId=25100&makeModelVariantExclusions[0].modelId=32&makeModelVariantExclusions[1].makeId=25100&makeModelVariantExclusions[1].modelId=41&categories=EstateCar&transmissions=AUTOMATIC_GEAR&minPowerAsArray=110&maxPowerAsArray=KW&minPowerAsArray=KW&ambitCountry=DE"
     ]
     
     def __init__(self):
