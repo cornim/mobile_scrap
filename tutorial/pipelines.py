@@ -56,6 +56,10 @@ class CarPipeline(object):
                 
                 item['price_calc'] = round(base_price)
                 item['price_diff'] = item['price_calc'] - item['price']
+                
+        for key in item:
+            if isinstance(item[key], unicode):
+                item[key] = item[key].encode('utf-8')
         
         if spider.write_csv:
             self.items.append(item)
@@ -89,10 +93,7 @@ class CarPipeline(object):
         
         if spider.write_csv:
             items_sorted = sorted(self.items, key=lambda x: -x['price_diff'])
-            for item in items_sorted:
-                for key in item:
-                    if isinstance(item[key], unicode):
-                        item[key] = item[key].encode('utf-8')
+            
             with open(spider.name + ".csv", 'w') as f:
                 fieldnames = ["price", "price_calc", "price_diff", "dist", "ez", "km", "ps", "color_o", "color_i", 
                               "keyless", "navi_prof", "HUD", "adap_drive", "ddc", "m_paket", "act_ilenk",
