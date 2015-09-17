@@ -4,46 +4,20 @@ Created on Aug 20, 2015
 @author: corni
 '''
 
-from scrapy import Spider, Request
+from tutorial.spiders.all import CarSpider
 from tutorial.items import Car
-from helper import search_words_yes_no, extract_main_data, plz_dist, block_known_cars
-import pickle
-import os
 
-class BmwSpider(Spider):
+class BmwSpider(CarSpider):
     name = "bmw"
     allowed_domains = ["mobile.de"]
     start_urls = [
         "http://suchen.mobile.de/auto/search.html?isSearchRequest=true&sortOption.sortBy=searchNetGrossPrice&fuels=DIESEL&sortOption.sortOrder=ASCENDING&features=HEAD_UP_DISPLAY&damageUnrepaired=NO_DAMAGE_UNREPAIRED&ambitCountry=DE&scopeId=C&transmissions=AUTOMATIC_GEAR&categories=EstateCar&maxMileage=150000&minPowerAsArray=150&minPowerAsArray=KW&minFirstRegistrationDate=2011-01-01&maxPrice=31000&makeModelVariant1.makeId=3500&makeModelVariant1.modelId=16%2C17%2C74%2C18%2C19%2C20%2C21%2C22%2C65%2C23%2C66%2C24%2C25%2C26%2C67%2C70&makeModelVariant1.modelGroupId=22"
     ]
     
-    def __init__(self):
-        if os.path.isfile(self.fname):
-            with open(self.fname, 'r') as f:
-                self.block_list = pickle.load(f)
-        
-    def save_block_list(self):
-        with open(self.fname, 'w') as f:
-            pickle.dump(self.block_list, f)        
-    
-    #List with blocked ad ids
-    block_list = []
-    fname = "bmw_blocked_ids"
+    def __init__(self, *args, **kwargs):
+        super(BmwSpider, self).__init__(*args, **kwargs)
 
-    def parse(self, response):
-        for sel in response.xpath("//a[contains(@href,'pageNumber')]"):
-            relurl = sel.xpath('@href').extract()
-            if len(relurl) == 1:
-                relurl = relurl[0]
-                url = response.urljoin(relurl)
-                if block_known_cars(url, self.block_list):
-                    continue
-                
-                #print url
-                if "search.html" in url:
-                    yield Request(url, callback=self.parse)
-                if "details.html" in url:
-                    yield Request(url, callback=self.parse_car)
+    fname = "bmw_blocked_ids"
     
             
     def parse_car(self, response):
@@ -54,27 +28,42 @@ class BmwSpider(Spider):
             if any(word in data for word in check1):
                 ret = Car()
                 
-                extract_main_data(response, ret)
+                self.extract_main_data(response, ret) #ez, km, price
                 
-                search_words_yes_no(["komfortzugang", "keyless"], data, ret, 'keyless')
-                search_words_yes_no(["adaptive drive"], data, ret, 'adaptive_drive')
-                search_words_yes_no(["driving assistant plus", "stauassistent"], data, ret, 'stau_assi')
-                search_words_yes_no(["rtti", "traffic information"], data, ret, 'RTTI')
-                search_words_yes_no(['aerodynamikpaket', 'aerodynamik-paket', 'aerodynamik paket',
+                #feat comf
+                self.search_words_yes_no(["komfortzugang", "keyless"], data, ret, 'keyless')
+                self.search_words_yes_no(['aerodynamikpaket', 'aerodynamik-paket', 'aerodynamik paket',
                                      'sportpaket', 'sport-paket', 'sport paket',
                                      'm-paket', 'm paket'], data, ret, 'm_paket')
                 
-                ret['dist'] = plz_dist(response, "60314")
+                self.search_words_yes_no(["komfortsitze", "komfort-sitze", "komfort sitze"], data, ret, "komf_sitz")
+                self.search_words_yes_no(["aktivsitze", "aktiv-sitze", "aktiv sitze"], data, ret, "act_sitz")
+                self.search_words_yes_no(["soft close", "soft-close"], data, ret, "sc_auto")
+                self.search_words_yes_no(["garagentor"], data, ret, "gt_oeff")
+                self.search_words_yes_no(["gerkupplung"], data, ret, "ah_kupp")
+                
+                #feat drive
+                self.search_words_yes_no(["adaptive drive"], data, ret, 'adap_drive')
+                self.search_words_yes_no(["driving assistant plus", "stauassistent"], data, ret, 'stau_assi')
+                self.search_words_yes_no(["heckklappenbe", "automatische heckklappe"], data, ret, "auto_h_k")
+                self.search_words_yes_no(["fernlichtassi"], data, ret, "fl_assi")
+                self.search_words_yes_no(["kurvenlicht"], data, ret, "adapt_kl")
+                self.search_words_yes_no(["aktivlenkung", "aktiv-lenkung", "aktiv lenkung"], data, ret, "act_lenk")
+                self.search_words_yes_no(["integral"], data, ret, "act_ilenk")
+                
+                #feat drive info
+                self.search_words_yes_no(["rtti", "traffic information"], data, ret, 'RTTI')
+                self.search_words_yes_no(["profes"], data, ret, "navi_prof")
+                self.search_words_yes_no(["speed"], data, ret, "speed_l_i")
+                self.search_words_yes_no(["spurwechsel"], data, ret, "sw_warn")
+                
+                self.search_words_yes_no(["fahrkamera", "fahr kamera", "fahr-kamera"], data, ret, "r_cam")
+                self.search_words_yes_no(["surround"], data, ret, "s_view")
+                self.search_words_yes_no(["parkassistent", "park-assistent", "park assistent"], data, ret, "p_assi")                
+                
+                ret['dist'] = self.plz_dist(response, "60314")
 
                 ret['price'] = response.xpath("//p[contains(@class, 'pricePrimaryCountryOfSale priceGross')]/text()").extract()[0]
                 ret['url'] = response.url
                 yield ret
                 
-
-                
-                
-                
-        #connectedDrive
-        #adaptive drive
-        #Keyless Drive / Keyless Vehicle
-        #fahrerassistenz

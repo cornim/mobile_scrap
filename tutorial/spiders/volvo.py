@@ -4,48 +4,21 @@ Created on Aug 20, 2015
 @author: corni
 '''
 
-from scrapy import Spider, Request
 from tutorial.items import Car
-from tutorial.spiders.helper import search_words_yes_no, extract_main_data, plz_dist, block_known_cars
-import pickle
-import os
+from tutorial.spiders.all import CarSpider
 
-class VolvoSpider(Spider):
+class VolvoSpider(CarSpider):
     name = "volvo"
     allowed_domains = ["mobile.de"]
     start_urls = [
         "http://suchen.mobile.de/auto/search.html?isSearchRequest=true&sortOption.sortOrder=ASCENDING&scopeId=C&sortOption.sortBy=searchNetGrossPrice&damageUnrepaired=NO_DAMAGE_UNREPAIRED&minFirstRegistrationDate=2009-01-01&maxMileage=150000&maxPrice=25000&fuels=DIESEL&makeModelVariant1.makeId=25100&makeModelVariantExclusions[0].makeId=25100&makeModelVariantExclusions[0].modelId=32&makeModelVariantExclusions[1].makeId=25100&makeModelVariantExclusions[1].modelId=41&categories=EstateCar&transmissions=AUTOMATIC_GEAR&minPowerAsArray=110&maxPowerAsArray=KW&minPowerAsArray=KW&ambitCountry=DE"
     ]
     
-    def __init__(self):
-        if os.path.isfile(self.fname):
-            with open(self.fname, 'r') as f:
-                self.block_list = pickle.load(f)
+    def __init__(self, *args, **kwargs):
+        super(VolvoSpider, self).__init__(*args, **kwargs)
         
-    def save_block_list(self):
-        with open(self.fname, 'w') as f:
-            pickle.dump(self.block_list, f)        
-    
-    #List with blocked ad ids
-    block_list = []
     fname = "volvo_blocked_ids"
 
-    def parse(self, response):
-        for sel in response.xpath("//a[contains(@href,'pageNumber')]"):
-            relurl = sel.xpath('@href').extract()
-            if len(relurl) == 1:
-                relurl = relurl[0]
-                url = response.urljoin(relurl)
-                if block_known_cars(url, self.block_list):
-                    continue
-        
-                #print url
-                if "search.html" in url:
-                    yield Request(url, callback=self.parse)
-                if "details.html" in url:
-                    yield Request(url, callback=self.parse_car)
-    
-            
     def parse_car(self, response):
         data = response.xpath("//div[@id='ad-description']").extract()
         if len(data)==1:
@@ -56,25 +29,16 @@ class VolvoSpider(Spider):
             if any(word in data for word in check1):
                 ret = Car()
                 
-                extract_main_data(response, ret)
+                self.extract_main_data(response, ret)
                 
-                search_words_yes_no(["komfortzugang", "keyless"], data, ret, 'keyless')
-                search_words_yes_no(["adaptive drive"], data, ret, 'adaptive_drive')
-                search_words_yes_no(["driving assistant plus", "stauassistent"], data, ret, 'stau_assi')
-                search_words_yes_no(["rtti", "traffic information"], data, ret, 'RTTI')
+                self.search_words_yes_no(["komfortzugang", "keyless"], data, ret, 'keyless')
+                self.search_words_yes_no(["adaptive drive"], data, ret, 'adaptive_drive')
+                self.search_words_yes_no(["driving assistant plus", "stauassistent"], data, ret, 'stau_assi')
+                self.search_words_yes_no(["rtti", "traffic information"], data, ret, 'RTTI')
                 ret['m_paket'] = "N"
                 
-                ret['dist'] = plz_dist(response, "60314")
+                ret['dist'] = self.plz_dist(response, "60314")
                 
                 ret['price'] = response.xpath("//p[contains(@class, 'pricePrimaryCountryOfSale priceGross')]/text()").extract()[0]
                 ret['url'] = response.url
                 yield ret
-
-
-                
-                
-                
-        #connectedDrive
-        #adaptive drive
-        #Keyless Drive / Keyless Vehicle
-        #fahrerassistenz

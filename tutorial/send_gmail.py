@@ -10,6 +10,7 @@ from oauth2client.file import Storage
 import os.path
 import webbrowser
 import base64
+import datetime
 import httplib2
 from email.mime.text import MIMEText
 
@@ -62,7 +63,7 @@ class GmailSender(object):
             self.load_oauth2_credentials('client_secret.json', "cred.json")
     
         user = 'cornelius.mund@gmail.com'
-        if self.credentials.access_token_expired:
+        if (self.credentials.token_expiry - datetime.datetime.utcnow()) < datetime.timedelta(minutes=2):
             http = httplib2.Http()
             self.credentials.refresh(http)
         auth_string = self.GenerateOAuth2String(user, self.credentials.access_token)
