@@ -33,8 +33,7 @@ class BmwSpider(CarSpider):
                 #feat comf
                 self.search_words_yes_no(["komfortzugang", "keyless"], data, ret, 'keyless')
                 self.search_words_yes_no(['aerodynamikpaket', 'aerodynamik-paket', 'aerodynamik paket',
-                                     'sportpaket', 'sport-paket', 'sport paket',
-                                     'm-paket', 'm paket'], data, ret, 'm_paket')
+                                     'sportpaket', 'sport-paket', 'sport paket'], data, ret, 'm_paket')
                 
                 self.search_words_yes_no(["komfortsitze", "komfort-sitze", "komfort sitze"], data, ret, "komf_sitz")
                 self.search_words_yes_no(["aktivsitze", "aktiv-sitze", "aktiv sitze"], data, ret, "act_sitz")
