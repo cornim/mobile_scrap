@@ -24,7 +24,8 @@ class BmwSpider(CarSpider):
         data = response.xpath("//div[@id='ad-description']").extract()
         if len(data)==1:
             data = data[0].lower()
-            check1 = ("aktive geschw", "adaptive cruise control", "acc", "abstandsregelung", "driving assistant plus")
+            check1 = ("aktive geschw", "adaptive cruise control", "abstandsregelung",  "abstandregelung"
+                      "driving assistant plus", "abstandsregeltempomat")
             if any(word in data for word in check1):
                 ret = Car()
                 
