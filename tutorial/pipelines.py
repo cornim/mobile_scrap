@@ -28,32 +28,31 @@ class CarPipeline(object):
                 base_price = base_price * math.exp(-0.12*acc_age)
                 base_price = base_price - int(item['dist'])*2
                 
-                base_price = self.mod_price(base_price, item['keyless'], 2000)                
+                base_price = self.mod_price(base_price, item['keyless'], 3000)
+                base_price = self.mod_price(base_price, item['navi_prof'], 3000)
+                base_price = self.mod_price(base_price, item['HUD'], 2000)
+                base_price = self.mod_price(base_price, item['adap_drive'], 2000)
+                base_price = self.mod_price(base_price, item['ddc'], 1800)
                 base_price = self.mod_price(base_price, item['m_paket'], 1500)
+                base_price = self.mod_price(base_price, item['act_ilenk'], 1200)
+                base_price = self.mod_price(base_price, item['p_assi'], 1200)
                 base_price = self.mod_price(base_price, item['komf_sitz'], 1000)
-                base_price = self.mod_price(base_price, item['act_sitz'], 800)
+                base_price = self.mod_price(base_price, item['speed_l_i'], 800)
+                base_price = self.mod_price(base_price, item['fl_assi'], 700)
+                base_price = self.mod_price(base_price, item['s_view'], 600)
+                base_price = self.mod_price(base_price, item['adapt_kl'], 500)
+                base_price = self.mod_price(base_price, item['ah_kupp'], 500)
+                base_price = self.mod_price(base_price, item['sw_warn'], 400)
                 base_price = self.mod_price(base_price, item['sc_auto'], 250)
                 base_price = self.mod_price(base_price, item['gt_oeff'], 150)
-                base_price = self.mod_price(base_price, item['ah_kupp'], 800)
-                
-                base_price = self.mod_price(base_price, item['adap_drive'], 2500)
-                base_price = self.mod_price(base_price, item['ddc'], 2000)
-                base_price = self.mod_price(base_price, item['stau_assi'], 5000)
                 base_price = self.mod_price(base_price, item['auto_h_k'], 150)
-                base_price = self.mod_price(base_price, item['fl_assi'], 700)
-                base_price = self.mod_price(base_price, item['adapt_kl'], 500)
-                base_price = self.mod_price(base_price, item['act_lenk'], 0)
-                base_price = self.mod_price(base_price, item['act_ilenk'], 1200)
-                
-                base_price = self.mod_price(base_price, item['HUD'], 2000)
-                base_price = self.mod_price(base_price, item['RTTI'], 2500)
-                base_price = self.mod_price(base_price, item['navi_prof'], 3000)
-                base_price = self.mod_price(base_price, item['speed_l_i'], 800)
-                base_price = self.mod_price(base_price, item['sw_warn'], 400)
-                
                 base_price = self.mod_price(base_price, item['r_cam'], 100)
-                base_price = self.mod_price(base_price, item['s_view'], 600)
-                base_price = self.mod_price(base_price, item['p_assi'], 1200)
+                base_price = self.mod_price(base_price, item['act_lenk'], 0)
+                
+                #Never present
+                base_price = self.mod_price(base_price, item['stau_assi'], 5000)
+                base_price = self.mod_price(base_price, item['RTTI'], 2500)
+                base_price = self.mod_price(base_price, item['act_sitz'], 800)
                 
                 item['price_calc'] = round(base_price)
                 item['price_diff'] = item['price_calc'] - item['price']
@@ -96,10 +95,11 @@ class CarPipeline(object):
                         item[key] = item[key].encode('utf-8')
             with open(spider.name + ".csv", 'w') as f:
                 fieldnames = ["price", "price_calc", "price_diff", "dist", "ez", "km", "ps", "color_o", "color_i", 
-                              "keyless", "m_paket", "adap_drive", "ddc", "HUD",
-                              "komf_sitz","act_sitz","ah_kupp","sc_auto","gt_oeff",
-                              "fl_assi","act_ilenk","auto_h_k","adapt_kl","act_lenk",
-                              "navi_prof","p_assi","speed_l_i","sw_warn","s_view", "r_cam","stau_assi", "RTTI",
+                              "keyless", "navi_prof", "HUD", "adap_drive", "ddc", "m_paket", "act_ilenk",
+                              "p_assi", "komf_sitz","speed_l_i", "fl_assi","s_view","adapt_kl","ah_kupp",
+                              "sw_warn","sc_auto","gt_oeff",
+                              "auto_h_k","r_cam","act_lenk",
+                              "act_sitz","stau_assi", "RTTI",
                               "url"]
                 writer = csv.DictWriter(f, fieldnames)
                 writer.writeheader()
