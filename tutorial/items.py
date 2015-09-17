@@ -32,6 +32,7 @@ class Car(Item):
     
     #feat drive
     adap_drive = Field()
+    ddc = Field()
     stau_assi = Field()
     auto_h_k = Field()  #automatische heckklappe
     fl_assi = Field()
@@ -40,6 +41,7 @@ class Car(Item):
     act_ilenk = Field()
     
     #feat drive info
+    HUD = Field()
     RTTI = Field()
     navi_prof = Field()
     speed_l_i = Field()

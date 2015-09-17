@@ -84,7 +84,7 @@ class CarSpider(Spider):
         main_data = "".join(response.xpath("//div[@class='mainTechnicalData']/p/text()").extract())
         try:
             ez_match = re.match(r".*([0-9]{2}).([0-9]{4}).*", main_data, flags=re.DOTALL)
-            car_item['ez'] = int(ez_match.group(2)) + int(ez_match.group(1))/12.0
+            car_item['ez'] = round(int(ez_match.group(2)) + int(ez_match.group(1))/12.0,1)
         except:
             logging.exception("No ez for url " + response.url)
         

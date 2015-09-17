@@ -11,7 +11,7 @@ class BmwSpider(CarSpider):
     name = "bmw"
     allowed_domains = ["mobile.de"]
     start_urls = [
-        "http://suchen.mobile.de/auto/search.html?isSearchRequest=true&sortOption.sortBy=searchNetGrossPrice&fuels=DIESEL&sortOption.sortOrder=ASCENDING&features=HEAD_UP_DISPLAY&damageUnrepaired=NO_DAMAGE_UNREPAIRED&ambitCountry=DE&scopeId=C&transmissions=AUTOMATIC_GEAR&categories=EstateCar&maxMileage=150000&minPowerAsArray=150&minPowerAsArray=KW&minFirstRegistrationDate=2011-01-01&maxPrice=31000&makeModelVariant1.makeId=3500&makeModelVariant1.modelId=16%2C17%2C74%2C18%2C19%2C20%2C21%2C22%2C65%2C23%2C66%2C24%2C25%2C26%2C67%2C70&makeModelVariant1.modelGroupId=22"
+        "http://suchen.mobile.de/auto/search.html?ambitCountry=DE&sortOption.sortBy=searchNetGrossPrice&fuels=DIESEL&sortOption.sortOrder=ASCENDING&isSearchRequest=true&transmissions=AUTOMATIC_GEAR&categories=EstateCar&scopeId=C&damageUnrepaired=NO_DAMAGE_UNREPAIRED&minPowerAsArray=150&minPowerAsArray=KW&maxPrice=31000&maxMileage=150000&minFirstRegistrationDate=2011-01-01&makeModelVariant1.makeId=3500&makeModelVariant1.modelId=16%2C17%2C74%2C18%2C19%2C20%2C21%2C22%2C65%2C23%2C66%2C24%2C25%2C26%2C67%2C70&makeModelVariant1.modelGroupId=22"
     ]
     
     def __init__(self, *args, **kwargs):
@@ -43,6 +43,7 @@ class BmwSpider(CarSpider):
                 
                 #feat drive
                 self.search_words_yes_no(["adaptive drive"], data, ret, 'adap_drive')
+                self.search_words_yes_no(["ddc", "dynamische d"], data, ret, 'ddc')
                 self.search_words_yes_no(["driving assistant plus", "stauassistent"], data, ret, 'stau_assi')
                 self.search_words_yes_no(["heckklappenbe", "automatische heckklappe"], data, ret, "auto_h_k")
                 self.search_words_yes_no(["fernlichtassi"], data, ret, "fl_assi")
@@ -51,7 +52,8 @@ class BmwSpider(CarSpider):
                 self.search_words_yes_no(["integral"], data, ret, "act_ilenk")
                 
                 #feat drive info
-                self.search_words_yes_no(["rtti", "traffic information"], data, ret, 'RTTI')
+                self.search_words_yes_no(["hud", "head up", "head-up", "heads-up", "heads up"], data, ret, 'HUD')
+                self.search_words_yes_no(["rtti", "real time", "real-time"], data, ret, 'RTTI')
                 self.search_words_yes_no(["profes"], data, ret, "navi_prof")
                 self.search_words_yes_no(["speed"], data, ret, "speed_l_i")
                 self.search_words_yes_no(["spurwechsel"], data, ret, "sw_warn")

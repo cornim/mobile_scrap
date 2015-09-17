@@ -36,7 +36,8 @@ class CarPipeline(object):
                 base_price = self.mod_price(base_price, item['gt_oeff'], 150)
                 base_price = self.mod_price(base_price, item['ah_kupp'], 500)
                 
-                base_price = self.mod_price(base_price, item['adap_drive'], 2500)
+                base_price = self.mod_price(base_price, item['adap_drive'], 1500)
+                base_price = self.mod_price(base_price, item['ddc'], 1000)
                 base_price = self.mod_price(base_price, item['stau_assi'], 5000)
                 base_price = self.mod_price(base_price, item['auto_h_k'], 250)
                 base_price = self.mod_price(base_price, item['fl_assi'], 700)
@@ -44,16 +45,17 @@ class CarPipeline(object):
                 base_price = self.mod_price(base_price, item['act_lenk'], 0)
                 base_price = self.mod_price(base_price, item['act_ilenk'], 500)
                 
+                base_price = self.mod_price(base_price, item['HUD'], 1000)
                 base_price = self.mod_price(base_price, item['RTTI'], 1500)
                 base_price = self.mod_price(base_price, item['navi_prof'], 1000)
                 base_price = self.mod_price(base_price, item['speed_l_i'], 300)
                 base_price = self.mod_price(base_price, item['sw_warn'], 250)
                 
                 base_price = self.mod_price(base_price, item['r_cam'], 100)
-                base_price = self.mod_price(base_price, item['s_view'], 100)
+                base_price = self.mod_price(base_price, item['s_view'], 250)
                 base_price = self.mod_price(base_price, item['p_assi'], 500)
                 
-                item['price_calc'] = base_price
+                item['price_calc'] = round(base_price)
                 item['price_diff'] = item['price_calc'] - item['price']
         
         if spider.write_csv:
@@ -94,9 +96,10 @@ class CarPipeline(object):
                         item[key] = item[key].encode('utf-8')
             with open(spider.name + ".csv", 'w') as f:
                 fieldnames = ["price", "price_calc", "price_diff", "dist", "ez", "km", "ps", "color_o", "color_i", 
-                              "keyless", "m_paket","komf_sitz","act_sitz","ah_kupp","sc_auto","gt_oeff",
-                              "adap_drive", "stau_assi","fl_assi","act_ilenk","auto_h_k","adapt_kl","act_lenk",
-                              "RTTI","navi_prof","p_assi","speed_l_i","sw_warn","r_cam","s_view",
+                              "keyless", "m_paket", "adap_drive", "ddc", "HUD",
+                              "komf_sitz","act_sitz","ah_kupp","sc_auto","gt_oeff",
+                              "fl_assi","act_ilenk","auto_h_k","adapt_kl","act_lenk",
+                              "navi_prof","p_assi","speed_l_i","sw_warn","s_view", "r_cam","stau_assi", "RTTI",
                               "url"]
                 writer = csv.DictWriter(f, fieldnames)
                 writer.writeheader()
