@@ -21,7 +21,7 @@ class CarPipeline(object):
             if item['ez'] and item['km']:
                 base_price = 0
                 if spider.name == 'bmw':
-                    base_price = 60000
+                    base_price = 70000
                 if spider.name == "volvo":
                     base_price = 55000
                 acc_age = (2016-int(item['ez']) + int(item['km'])/25000.0)
@@ -88,6 +88,10 @@ class CarPipeline(object):
         
         if spider.write_csv:
             items_sorted = sorted(self.items, key=lambda x: -x['price_diff'])
+            for item in items_sorted:
+                for key in item:
+                    if isinstance(item[key], unicode):
+                        item[key] = item[key].encode('utf-8')
             with open(spider.name + ".csv", 'w') as f:
                 fieldnames = ["price", "price_calc", "price_diff", "dist", "ez", "km", "ps", "color_o", "color_i", 
                               "keyless", "m_paket","komf_sitz","act_sitz","ah_kupp","sc_auto","gt_oeff",
