@@ -39,11 +39,11 @@ class CarPipeline(object):
                 base_price = self.mod_price(base_price, item['adap_drive'], 1500)
                 base_price = self.mod_price(base_price, item['ddc'], 1000)
                 base_price = self.mod_price(base_price, item['stau_assi'], 5000)
-                base_price = self.mod_price(base_price, item['auto_h_k'], 250)
+                base_price = self.mod_price(base_price, item['auto_h_k'], 150)
                 base_price = self.mod_price(base_price, item['fl_assi'], 700)
                 base_price = self.mod_price(base_price, item['adapt_kl'], 300)
                 base_price = self.mod_price(base_price, item['act_lenk'], 0)
-                base_price = self.mod_price(base_price, item['act_ilenk'], 500)
+                base_price = self.mod_price(base_price, item['act_ilenk'], 700)
                 
                 base_price = self.mod_price(base_price, item['HUD'], 1000)
                 base_price = self.mod_price(base_price, item['RTTI'], 1500)
