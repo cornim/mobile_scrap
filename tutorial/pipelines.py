@@ -14,6 +14,14 @@ class CarPipeline(object):
     items = list()
     email = GmailSender()
     
+    columns = ["price", "price_calc", "price_diff", "dist", "ez", "km", "ps", "color_o", "color_i", 
+              "keyless", "navi_prof", "HUD", "adap_drive", "ddc", "m_paket", "act_ilenk",
+              "p_assi", "komf_sitz","speed_l_i", "fl_assi","s_view","adapt_kl","ah_kupp",
+              "sw_warn","sc_auto","gt_oeff",
+              "auto_h_k","r_cam","act_lenk",
+              "act_sitz","stau_assi", "RTTI",
+              "url"]
+    
     def process_item(self, item, spider):
         if item['price']:
             digits = re.findall(r'\d+', item['price'])
@@ -79,7 +87,10 @@ class CarPipeline(object):
     def send_mail(self, spider, item):
         if spider.send_mail:
             subject = spider.name + ": Price diff = " + str(item['price_diff'])
-            text = '\n\n'.join(str(key)+"="+str(val) for (key,val) in dict(item.items()).items())
+            text = ""
+            data = dict(item.items())
+            for key in self.columns:
+                text = text + str(key) + "=" + str(data[key]) + "\n\n"
             self.email.send_mail(text, subject)
     
     def open_spider(self, spider):
@@ -95,13 +106,7 @@ class CarPipeline(object):
             items_sorted = sorted(self.items, key=lambda x: -x['price_diff'])
             
             with open(spider.name + ".csv", 'w') as f:
-                fieldnames = ["price", "price_calc", "price_diff", "dist", "ez", "km", "ps", "color_o", "color_i", 
-                              "keyless", "navi_prof", "HUD", "adap_drive", "ddc", "m_paket", "act_ilenk",
-                              "p_assi", "komf_sitz","speed_l_i", "fl_assi","s_view","adapt_kl","ah_kupp",
-                              "sw_warn","sc_auto","gt_oeff",
-                              "auto_h_k","r_cam","act_lenk",
-                              "act_sitz","stau_assi", "RTTI",
-                              "url"]
+                fieldnames = self.columns
                 writer = csv.DictWriter(f, fieldnames)
                 writer.writeheader()
                 for item in items_sorted:
