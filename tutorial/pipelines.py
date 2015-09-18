@@ -15,7 +15,7 @@ class CarPipeline(object):
     email = GmailSender()
     
     columns = ["price", "price_calc", "price_diff", "dist", "ez", "km", "ps", "color_o", "color_i", 
-              "keyless", "navi_prof", "HUD", "adap_drive", "ddc", "m_paket", "act_ilenk",
+              "navi_prof", "keyless", "HUD", "adap_drive", "ddc", "m_paket", "act_ilenk",
               "p_assi", "komf_sitz","speed_l_i", "fl_assi","s_view","adapt_kl","ah_kupp",
               "sw_warn","sc_auto","gt_oeff",
               "auto_h_k","r_cam","act_lenk",
@@ -36,8 +36,8 @@ class CarPipeline(object):
                 base_price = base_price * math.exp(-0.12*acc_age)
                 base_price = base_price - int(item['dist'])*2
                 
-                base_price = self.mod_price(base_price, item['keyless'], 3000)
-                base_price = self.mod_price(base_price, item['navi_prof'], 3000)
+                base_price = self.mod_price(base_price, item['navi_prof'], 2500)
+                base_price = self.mod_price(base_price, item['keyless'], 2000)
                 base_price = self.mod_price(base_price, item['HUD'], 2000)
                 base_price = self.mod_price(base_price, item['adap_drive'], 2000)
                 base_price = self.mod_price(base_price, item['ddc'], 1800)
