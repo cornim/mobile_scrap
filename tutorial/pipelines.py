@@ -58,8 +58,8 @@ class CarPipeline(object):
                 base_price = self.mod_price(base_price, item['act_lenk'], 0)
                 
                 #Never present
-                base_price = self.mod_price(base_price, item['stau_assi'], 5000)
-                base_price = self.mod_price(base_price, item['RTTI'], 2500)
+                base_price = self.mod_price(base_price, item['stau_assi'], 3000)
+                base_price = self.mod_price(base_price, item['RTTI'], 1200)
                 base_price = self.mod_price(base_price, item['act_sitz'], 800)
                 
                 item['price_calc'] = round(base_price)
